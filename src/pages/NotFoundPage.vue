@@ -41,7 +41,6 @@
 </template>
 
 <style scoped>
-/* Дополнительная анимация для "мягкого" появления */
 div {
   animation: fadeIn 0.5s ease-out;
 }

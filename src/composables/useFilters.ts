@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useTaskStore } from '@/store/taskStore'
 import type { TaskStatus, TaskPriority, SortOption, ViewOption } from '@/types/task'
 
@@ -6,6 +6,10 @@ const PRIORITY_ORDER: Record<TaskPriority, number> = { high: 0, medium: 1, low: 
 
 export function useFilters() {
   const store = useTaskStore()
+
+  onMounted(() => {
+    store.fetchTasks()
+  })
 
   const searchQuery = ref<string>('')
   const statusFilter = ref<TaskStatus | 'all'>('all')
@@ -32,8 +36,8 @@ export function useFilters() {
     }
 
     list.sort((a, b) => {
-      if (sortBy.value === 'newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      if (sortBy.value === 'oldest') return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      if (sortBy.value === 'newest') return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      if (sortBy.value === 'oldest') return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       if (sortBy.value === 'priority') return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]
       return 0
     })

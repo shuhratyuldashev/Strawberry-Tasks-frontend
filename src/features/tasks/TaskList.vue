@@ -78,7 +78,7 @@
         @delete="$emit('deleteTask', $event)"
         @changeStatus="(id, status) => $emit('changeStatus', id, status)"
         @changePriority="(id, priority) => $emit('changePriority', id, priority)"
-        @toggleComplete="$emit('toggleComplete', $event)"
+        @toggleTask="$emit('toggleTask', $event)"
       />
     </TransitionGroup>
 
@@ -118,6 +118,7 @@ interface Props {
   hasActiveFilters: boolean
 }
 
+
 const props = withDefaults(defineProps<Props>(), {
   tasks: () => [],
   statusFilter: 'all',
@@ -129,10 +130,10 @@ const emit = defineEmits<{
   'update:statusFilter': [value: TaskStatus | 'all']
   'update:priorityFilter': [value: TaskPriority | 'all']
   editTask: [task: Task]
-  deleteTask: [id: string]
-  changeStatus: [id: string, status: TaskStatus]
-  changePriority: [id: string, priority: TaskPriority]
-  toggleComplete: [id: string]
+  deleteTask: [id: number]
+  changeStatus: [id: number, status: TaskStatus]
+  changePriority: [id: number, priority: TaskPriority]
+  toggleTask: [id: number]
   createTask: []
   clearFilters: []
 }>()

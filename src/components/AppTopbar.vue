@@ -25,7 +25,7 @@
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
           </svg>
-          <span class="text-xs">{{ sortLabels[sortBy] }}</span>
+          <span class="text-xs">{{ SORT_LABELS[sortBy] }}</span>
           <svg
             class="w-3 h-3 text-zinc-400 transition-transform duration-150"
             :class="sortOpen ? 'rotate-180' : ''"
@@ -38,7 +38,7 @@
         <transition name="slide-down">
           <div v-if="sortOpen" class="absolute right-0 mt-1.5 w-40 bg-white border border-zinc-200 rounded-xl shadow-card overflow-hidden z-50">
             <button
-              v-for="opt in sortOptions"
+              v-for="opt in SORT_OPTIONS"
               :key="opt.value"
               class="w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-600 text-zinc-700 hover:bg-zinc-50 transition-colors"
               :class="{ 'text-zinc-900 bg-zinc-50': sortBy === opt.value }"
@@ -61,7 +61,7 @@
       </button>
 
       <div class="w-8 h-8 rounded-full bg-white text-pink-700 border-pink-700 border text-xs font-800 flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity flex-shrink-0">
-        JD
+        {{ userStore.user?.username?.charAt(0).toUpperCase() }}
       </div>
     </div>
   </header>
@@ -70,7 +70,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import type { SortOption, SortOptionItem } from '@/types/task'
+import type { SortOption } from '@/types/task'
+import { useUserStore } from '@/store/userStore'
+import { useAppConstants } from '@/composables/useAppConstants'
+
+const { SORT_LABELS, SORT_OPTIONS } = useAppConstants()
 
 interface Props {
   searchQuery: string
@@ -88,18 +92,8 @@ const emit = defineEmits<{
 
 const sortOpen = ref<boolean>(false)
 const sortDropdownRef = ref<HTMLElement | null>(null)
+const userStore = useUserStore()
 
-const sortOptions: SortOptionItem[] = [
-  { value: 'newest', label: 'Newest First' },
-  { value: 'oldest', label: 'Oldest First' },
-  { value: 'priority', label: 'By Priority' },
-]
-
-const sortLabels: Record<SortOption, string> = {
-  newest: 'Newest',
-  oldest: 'Oldest',
-  priority: 'Priority',
-}
 
 onClickOutside(sortDropdownRef, () => { sortOpen.value = false })
 

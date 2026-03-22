@@ -7,7 +7,7 @@
       <button
         class="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-150"
         :class="task.status === 'done' ? 'bg-pink-500 border-pink-500' : 'border-zinc-300 hover:border-zinc-500'"
-        @click="$emit('toggleComplete', task.id)"
+        @click="$emit('toggleTask', Number(task.id))"
       >
         <svg v-if="task.status === 'done'" class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
@@ -23,7 +23,7 @@
 
             <TaskBadge type="status" :value="task.status" />
             <TaskBadge type="priority" :value="task.priority" />
-            <span class="ml-auto text-[11px] text-zinc-400 font-500 flex-shrink-0">{{ timeAgo(task.createdAt) }}</span>
+            <span class="ml-auto text-[11px] text-zinc-400 font-500 flex-shrink-0">{{ timeAgo(task.created_at) }}</span>
           
 
           <div class="relative flex-shrink-0" ref="menuRef">
@@ -109,10 +109,10 @@ const props = defineProps<Props>()
 
 const emit = defineEmits<{
   edit: [task: Task]
-  delete: [id: string]
-  changeStatus: [id: string, status: TaskStatus]
-  changePriority: [id: string, priority: TaskPriority]
-  toggleComplete: [id: string]
+  delete: [id: number]
+  changeStatus: [id: number, status: TaskStatus]
+  changePriority: [id: number, priority: TaskPriority]
+  toggleTask: [id: number]
 }>()
 
 const menuOpen = ref<boolean>(false)
@@ -151,7 +151,7 @@ function handleStatusChange(status: TaskStatus): void {
 function handlePriorityChange(priority: TaskPriority): void {
   if (props.task.priority === priority) return
   menuOpen.value = false
-  emit('changePriority', props.task.id, priority)
+  emit('changePriority', props.task.id, priority) 
 }
 
 function timeAgo(iso: string): string {

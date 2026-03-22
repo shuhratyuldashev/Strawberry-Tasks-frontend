@@ -25,7 +25,7 @@
     <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
       <p class="px-3 mb-2 text-[10px] font-800 uppercase tracking-widest text-pink-400">Views</p>
       <button
-        v-for="item in navItems"
+        v-for="item in NAV_ITEMS"
         :key="item.id"
         class="sidebar-item w-full"
         :class="{ active: currentView === item.id }"
@@ -42,7 +42,7 @@
       <div class="pt-4 ">
         <p class="px-3 mb-2 text-[10px] font-800 uppercase tracking-widest text-pink-400">Priority</p>
         <button
-          v-for="p in priorityItems"
+          v-for="p in PRIORITY_ITEMS"
           :key="p.id"
           class="sidebar-item w-full"
           :class="{ active: selectedPriority === p.id }"
@@ -77,9 +77,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useTaskStore } from '@/store/taskStore'
-import type { NavItem, PriorityNavItem, TaskPriority } from '@/types/task'
+import { useAppConstants } from '@/composables/useAppConstants'
+import type { TaskPriority } from '@/types/task'
 
 interface Props {
   isOpen: boolean
@@ -94,34 +93,9 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const store = useTaskStore()
+const { NAV_ITEMS, PRIORITY_ITEMS } = useAppConstants()
 
-const navItems = computed<NavItem[]>(() => [
-  {
-    id: 'all',
-    label: 'All Tasks',
-    count: store.totalCount,
-    icon: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>`,
-  },
-  {
-    id: 'active',
-    label: 'Active',
-    count: store.activeCount,
-    icon: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
-  },
-  {
-    id: 'completed',
-    label: 'Completed',
-    count: store.completedCount,
-    icon: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
-  },
-])
 
-const priorityItems = computed<PriorityNavItem[]>(() => [
-  { id: 'high', label: 'High Priority', dot: 'bg-red-400', count: store.countByPriority('high') },
-  { id: 'medium', label: 'Medium Priority', dot: 'bg-amber-400', count: store.countByPriority('medium') },
-  { id: 'low', label: 'Low Priority', dot: 'bg-blue-400', count: store.countByPriority('low') },
-])
 
 function selectView(id: string): void {
   emit('update:currentView', id)

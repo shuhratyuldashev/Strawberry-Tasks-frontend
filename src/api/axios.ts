@@ -59,7 +59,6 @@ async function refreshAccessToken(): Promise<string | null> {
   return nextAccess;
 }
 
-// ✅ AxiosError — no underscores
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {

@@ -1,8 +1,9 @@
+import { tokenStorage } from "@/api/axios";
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    user: null as null | { id: string; name: string; email: string },
+    user: null as null | { id: string; username: string; email: string },
     isAuthenticated: false,
     loading: false,
   }),
@@ -11,9 +12,9 @@ export const useUserStore = defineStore("user", {
       this.user = user;
       this.isAuthenticated = true;
     },
-    clearUser() {
-      this.user = null;
-      this.isAuthenticated = false;
+    logOut() {
+      tokenStorage.clear();
+      window.location.reload();
     },
   },
 });

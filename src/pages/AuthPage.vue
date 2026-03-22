@@ -1,71 +1,7 @@
 <script setup lang="ts">
-import { api, tokenStorage } from '@/api/axios'
-import { ref, reactive } from 'vue'
-import { useUserStore } from '@/store/userStore'
-import { useRouter } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
 
-const isLogin = ref(true)
-const isLoading = ref(false)
-const userStore = useUserStore()
-const router = useRouter()
-
-const form = reactive({
-  username: '',
-  email: '',
-  password: '',
-})
-
-const errors = reactive({
-  username: '',
-  email: '',
-  password: '',
-})
-
-const handleSubmit = async (): Promise<void> => {
-  errors.username = ''
-  errors.email    = ''
-  errors.password = ''
-  isLoading.value = true
-
-  try {
-    if (isLogin.value) {
-      const res = await api.post('/login/', {
-        username: form.username,
-        password: form.password,
-      }).then((response) => {
-        console.log("RESPONSE", response)
-        return response.data
-      }).then((data) => {
-        tokenStorage.setTokens(data.access, data.refresh)
-      })
-      userStore.setUser(res)
-      router.push('/')
-
-    } else {
-      const res = await api.post('/register/', {
-        username: form.username,
-        email:    form.email,
-        password: form.password,
-      }).then((response) => {
-        console.log("RESPONSE", response)
-        return response.data
-      }).then((data) => {
-        tokenStorage.setTokens(data.access, data.refresh)
-      })
-      userStore.setUser(res)
-      router.push('/')
-    }
-  } catch (err: any) {
-    const data = err?.response?.data
-    console.log("ERR", err)
-    if (data?.username) errors.username = data.username[0]
-    if (data?.email)    errors.email    = data.email[0]
-    if (data?.password) errors.password = data.password[0]
-    if (data?.detail)   errors.username = data.detail
-  } finally {
-    isLoading.value = false
-  }
-}
+const { isLogin, isLoading, form, errors, handleSubmit, toggleMode } = useAuth()
 </script>
 
 <template>
@@ -137,7 +73,7 @@ const handleSubmit = async (): Promise<void> => {
 
       <div class="text-center pt-2">
         <button 
-          @click="isLogin = !isLogin" 
+          @click="toggleMode" 
           class="text-sm font-600 text-zinc-500 hover:text-zinc-900 transition-colors"
         >
           {{ isLogin ? "Don't have an account? Register" : "Already have an account? Login" }}
@@ -147,7 +83,7 @@ const handleSubmit = async (): Promise<void> => {
 
     <div class="fixed bottom-6 right-6 w-48">
       <div class="relative overflow-hidden rounded-xl bg-pink-50 border border-pink-200 p-2">
-        <a href="https://github.com/shuhratyuldashev" target="_blank" class="text-xs font-800 text-pink-400 uppercase tracking-tight">Open on GitHub</a>
+        <a href="https://github.com/shuhratyuldashev/Strawberry-Tasks-frontend" target="_blank" class="text-xs font-800 text-pink-400 uppercase tracking-tight">Open on GitHub</a>
       </div>
     </div>
   </div>

@@ -7,7 +7,7 @@ export function useTaskActions() {
 
   const editingTask = ref<Task | null>(null)
   const showForm = ref<boolean>(false)
-  const confirmDeleteId = ref<string | null>(null)
+  const confirmDeleteId = ref<number | null>(null)
 
   function openCreateForm(): void {
     editingTask.value = null
@@ -33,21 +33,22 @@ export function useTaskActions() {
     closeForm()
   }
 
-  function deleteTask(id: string): void {
+  function deleteTask(id: number): void {
     store.deleteTask(id)
     confirmDeleteId.value = null
   }
 
-  function changeStatus(id: string, status: TaskStatus): void {
-    store.updateTask(id, { status })
+ function changeStatus(id: number, status: TaskStatus): void {
+  store.updateTask(id, { status })
   }
 
-  function changePriority(id: string, priority: TaskPriority): void {
+  function changePriority(id: number, priority: TaskPriority): void {
     store.updateTask(id, { priority })
   }
 
-  function toggleComplete(id: string): void {
-    store.toggleComplete(id)
+  function toggleTask(id: number): void {
+    console.log("ID", id)
+    store.toggleTask(id)
   }
 
   return {
@@ -61,6 +62,6 @@ export function useTaskActions() {
     deleteTask,
     changeStatus,
     changePriority,
-    toggleComplete,
+    toggleTask,
   }
 }

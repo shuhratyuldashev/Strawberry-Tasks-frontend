@@ -10,13 +10,13 @@
       <h2 class="text-sm font-800 text-zinc-800 mb-4 uppercase tracking-wider">Profile</h2>
       <div class="flex items-center gap-4">
         <div class="w-14 h-14 rounded-full bg-pink-700 text-white text-lg font-800 flex items-center justify-center flex-shrink-0">
-          JD
+          {{ user?.username?.charAt(0)?.toUpperCase() || 'U' }}
         </div>
         <div class="flex-1 min-w-0">
-          <p class="text-sm font-700 text-zinc-900">Jane Doe</p>
-          <p class="text-xs text-zinc-500 font-500 mt-0.5">jane.doe@example.com</p>
+          <p class="text-sm font-700 text-zinc-900">{{ user?.username || 'User' }}</p>
+          <p class="text-xs text-zinc-500 font-500 mt-0.5">{{ user?.email || 'user@example.com' }}</p>
         </div>
-        <button class="btn-danger text-xs">Log out</button>
+        <button @click="logOut" class="btn-danger text-xs">Log out</button>
       </div>
     </div>
 
@@ -70,25 +70,9 @@
       </div>
     </div>
 
-    <!-- Danger Zone -->
-    <div class="card-base p-6 border-red-100">
-      <h2 class="text-sm font-800 text-red-600 mb-4 uppercase tracking-wider">Danger Zone</h2>
-      <div class="flex items-center justify-between gap-4">
-        <div>
-          <p class="text-sm font-700 text-zinc-800">Clear all tasks</p>
-          <p class="text-xs text-zinc-500 font-500 mt-0.5">Permanently delete all tasks. This cannot be undone.</p>
-        </div>
-        <button
-          class="flex-shrink-0 px-3.5 py-2 text-sm font-700 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 transition-all"
-          @click="handleClearAll"
-        >
-          Clear All
-        </button>
-      </div>
-    </div>
-
+  
     <div class="text-center mt-8">
-      <p class="text-xs text-zinc-400 font-500">TaskFlow v1.0.0 — Vue 3 + TypeScript + Pinia + DaisyUI</p>
+      <p class="text-xs text-zinc-400 font-500">StrawberryTasks v1.0.0 — Vue 3 + TypeScript + Pinia + DaisyUI</p>
     </div>
   </div>
 </template>
@@ -96,6 +80,7 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue'
 import { useTaskStore } from '@/store/taskStore'
+import { useUserStore } from '@/store/userStore'
 
 interface Preference {
   id: string
@@ -111,6 +96,7 @@ interface SummaryRow {
 }
 
 const store = useTaskStore()
+const { user, logOut } = useUserStore()
 
 const preferences = reactive<Preference[]>([
   { id: 'notifications', label: 'Task Notifications', description: 'Get notified when tasks are due.', enabled: true },
@@ -131,9 +117,6 @@ const completionPct = computed<number>(() => {
   return Math.round((store.completedCount / store.totalCount) * 100)
 })
 
-function handleClearAll(): void {
-  if (window.confirm('Are you sure you want to delete all tasks? This cannot be undone.')) {
-    store.clearAll()
-  }
-}
+
+
 </script>

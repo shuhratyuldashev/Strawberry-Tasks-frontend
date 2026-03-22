@@ -47,10 +47,10 @@
               v-model:priorityFilter="priorityFilter"
               :hasActiveFilters="hasActiveFilters"
               @editTask="openEditForm"
-              @deleteTask="(id: string) => { confirmDeleteId = id }"
+              @deleteTask="(id: number) => { confirmDeleteId = id }"
               @changeStatus="changeStatus"
               @changePriority="changePriority"
-              @toggleComplete="toggleComplete"
+              @toggleTask="toggleTask"
               @createTask="openCreateForm"
               @clearFilters="resetFilters"
             />
@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import AppSidebar from '@/components/AppSidebar.vue'
 import AppTopbar from '@/components/AppTopbar.vue'
 import StatsBar from '@/components/StatsBar.vue'
@@ -86,6 +86,9 @@ import DeleteConfirmModal from '@/components/DeleteConfirmModal.vue'
 import { useFilters } from '@/composables/useFilters'
 import { useTaskActions } from '@/composables/useTaskActions'
 import type { ViewOption, TaskPriority } from '@/types/task'
+import { useAppConstants } from '@/composables/useAppConstants'
+
+const { PAGE_SUBTITLES, PAGE_TITLES } = useAppConstants()
 
 const sidebarOpen = ref<boolean>(false)
 const currentView = ref<ViewOption>('all')
@@ -112,8 +115,12 @@ const {
   deleteTask,
   changeStatus,
   changePriority,
-  toggleComplete,
+  toggleTask,
 } = useTaskActions()
+
+onMounted(() => {
+  
+})
 
 function handleViewChange(view: string): void {
   currentView.value = view as ViewOption
@@ -122,18 +129,6 @@ function handleViewChange(view: string): void {
   }
 }
 
-const PAGE_TITLES: Record<ViewOption, string> = {
-  all: 'All Tasks',
-  active: 'Active Tasks',
-  completed: 'Completed Tasks',
-  settings: 'Settings',
-}
-
-const PAGE_SUBTITLES: Partial<Record<ViewOption, string>> = {
-  all: 'Everything in one place.',
-  active: 'Tasks that still need attention.',
-  completed: "Tasks you've finished.",
-}
 
 const pageTitle = computed<string>(() => PAGE_TITLES[currentView.value] ?? 'Tasks')
 const pageSubtitle = computed<string>(() => PAGE_SUBTITLES[currentView.value] ?? '')
