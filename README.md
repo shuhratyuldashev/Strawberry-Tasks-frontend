@@ -1,58 +1,49 @@
 # 🍓 Strawberry Tasks — Frontend
 
 This is the client-side application for Strawberry Tasks, built with Vue 3 and TypeScript. It features a sleek, modern UI with a focus on task management efficiency.
+
 ### 🛠 Tech Stack
 
-    - Framework: Vue 3 (Composition API)
-
-    - Build Tool: Vite
-
-    - State Management: Pinia
-
-    - Styling: Tailwind CSS
-
-    - HTTP Client: Axios
-
-    - Icons: Heroicons / Custom SVG
+* Framework: Vue 3 (Composition API)
+* Build Tool: Vite
+* State Management: Pinia
+* Styling: Tailwind CSS
+* HTTP Client: Axios
+* Icons: Heroicons / Custom SVG
 
 ### ✨ Key Features
 
-    Authentication: Full Login/Register flow with JWT (Access/Refresh tokens).
-
-    Task Management: Create, Update, Delete, and Toggle tasks.
-
-    Real-time UI: Reactive filtering by status (All, Active, Completed) and priority.
-
-    Composables: Clean architecture using custom logic hooks (e.g., useAuth, useTaskActions).
-
-    Responsive Design: Fully optimized for mobile and desktop.
+* Authentication: Full Login/Register flow with JWT (Access/Refresh tokens).
+* Task Management: Create, Update, Delete, and Toggle tasks.
+* Real-time UI: Reactive filtering by status (All, Active, Completed) and priority.
+* Composables: Clean architecture using custom logic hooks (e.g., useAuth, useTaskActions).
+* Responsive Design: Fully optimized for mobile and desktop.
 
 ### 🚀 Getting Started
 
-    1. Clone the repository:
-    ```
-    Bash
+1. Clone the repository:
 
-    git clone https://github.com/shuhratyuldashev/Strawberry-Tasks-frontend.git
-    cd Strawberry-Tasks-frontend
-    ```
+```bash
+git clone https://github.com/shuhratyuldashev/Strawberry-Tasks-frontend.git
+cd Strawberry-Tasks-frontend
+```
 
-    2. Install dependencies:
-    ```
-    Bash
+2. Install dependencies:
 
-    npm install
-    ```
+```bash
+npm install
+```
 
-    3. Configure Environment:
-    Create a .env file in the root and add your backend URL:
-    ```
-    VITE_API_URL=http://localhost:8000/api
-    ```
+3. Configure Environment:
 
-    4. Run Development Server:
-    ```
-    Bash
+Create a `.env` file in the root and add your backend URL:
 
-    npm run dev
-    ```
+```env
+VITE_API_URL=http://localhost:8000/api
+```
+
+4. Run Development Server:
+
+```bash
+npm run dev
+```
