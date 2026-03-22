@@ -2,6 +2,12 @@
 
 This is the client-side application for Strawberry Tasks, built with Vue 3 and TypeScript. It features a sleek, modern UI with a focus on task management efficiency.
 
+## 🔗 Backend Repository
+
+The backend for this project is available here:
+
+👉 https://github.com/shuhratyuldashev/Strawberry-Tasks-backend
+
 ### 🛠 Tech Stack
 
 * Framework: Vue 3 (Composition API)
